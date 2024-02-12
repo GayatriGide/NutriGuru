@@ -1,0 +1,17 @@
+fiber
+vitamin_a
+calcium
+magnesium
+sodium
+vitamin_c
+protien
+vitamin_e
+iron
+selenium
+carbohydrates
+chloride
+potassium
+vitamin_d
+manganese
+phosphorus
+iodine

@@ -1,0 +1,16 @@
+alkaline_diet
+low_fat_diet
+ketogenic_diet
+low_sodium_diet
+high_fiber_diet
+high_protien_diet
+dash_diet
+low_carb_diet
+vegan_diet
+hormone_diet
+type_a_diet
+paleo_diet
+Mediterranean_diet
+gluten_free_diet
+omni_diet
+type_o_diet

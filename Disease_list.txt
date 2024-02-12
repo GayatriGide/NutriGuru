@@ -1,0 +1,12 @@
+obesity
+diabeties
+hypertension
+goitre
+anemia
+pregnancy
+rickets
+kidney_disease
+scurvy
+heart_disease
+cancer
+eye_disease
