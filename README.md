@@ -24,6 +24,17 @@ This Python-based diet recommender is designed to provide personalized dietary r
 - **HTML/CSS**: Frontend design elements for enhancing the user experience.
 - **Nutrition APIs**: Integration with nutrition databases or APIs for accessing comprehensive food item details.
 
+## Installation
+To install the required dependencies, follow these steps:
+
+1. Clone the repository to your local machine.
+2. Navigate to the project directory.
+3. Install the necessary Python packages using pip:
+    ```bash
+    pip install -r requirements.txt
+    ```
+   Ensure you have Python installed on your system.
+
 ## Contribution Guidelines
 Contributions to this project are welcome! If you have ideas for improving the recommendation algorithm, enhancing the user interface, or adding new features, feel free to submit a pull request.
 
