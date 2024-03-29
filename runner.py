@@ -171,8 +171,8 @@ def display_macros(macros):
     print("Recommended Carbohydrate intake (g):", macros['carbs'])
     print("Recommended Water intake (ml):", macros['water'])
 
-macros = calculate_macros(weight, height, age, gender, activity_level, veg_nonveg)
-display_macros(macros)
+#macros = calculate_macros(weight, height, age, gender, activity_level, veg_nonveg)
+#display_macros(macros)
 
 def calculate_sums(random_sets):
     sums = {'Calories': 0, 'Proteins': 0, 'Fats': 0, 'Carbohydrates': 0}
@@ -235,7 +235,7 @@ def predict_food_names(sets, knn, food):
     
     return predicted_food_names
 
-food_subset = food_food_subset(veg_nonveg, food)
+food_subset = food_food_subset('veg', food)
 generated_sets = generate_nutrient_sets(macros['TDEE'], macros['protein'], macros['fat'], macros['carbs'])
 
 X = food_subset[['Calories', 'Proteins', 'Fats', 'Carbohydrates']]  
