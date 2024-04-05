@@ -78,6 +78,20 @@
                     <li>Water: {{ macros.water }}</li>
                 </ul> 
             </p>
+            <br>
+        <h1>Predicted Food Items</h1>
+            <ul>
+                {% for word in item %}
+                    <li>{{ word }}</li>
+                {% endfor %}
+            </ul>
+            <br>
+        <h1>Meal to take...</h1>
+            <ul>
+                {% for meal in recommendations %}
+                    <li>{{ meal }}</li>
+                {% endfor %}
+            </ul>
     </div>
 
     <br><br>
