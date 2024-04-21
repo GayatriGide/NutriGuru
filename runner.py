@@ -6,8 +6,6 @@ from sklearn.neighbors import KNeighborsClassifier
 from fuzzywuzzy import process
 from langdetect import detect
 from googletrans import Translator
-from multiprocessing import *
-from itertools import repeat
 import joblib
 import io
 import base64
@@ -283,8 +281,10 @@ def generate_sets_from_nutrient_recommendations(nutrient_recommendations):
 def food_food_subset(veg_nonveg, food):
     if veg_nonveg.lower() == 'veg':
         return food[food['VegNonVeg'] == 'Veg']
+    elif veg_nonveg.lower() == 'non-veg':
+        return food  # Assuming 'Non-Veg' indicates non-vegetarian
     else:
-        return food
+        raise ValueError("Invalid input.")
     
 def predict_food_names(sets, knn, food):
     # Initialize set to store predicted food names
@@ -319,8 +319,10 @@ def predicted_food_names_with_allergies(allergies, predicted_food_names):
 def df_food_subset(veg_nonveg, df):
     if veg_nonveg.lower() == 'veg':
         return df[df['Cluster'] == 'veg']  # Filter only the rows where the 'Cluster' column is 'veg'
+    elif veg_nonveg.lower() == 'non-veg':
+        return df  # Return the original DataFrame for non-vegetarian items
     else:
-        return df
+        raise ValueError("Invalid input.")
 
 def search_food_names_without_allergy(df_filtered, search_words):
     # Initialize sets to keep track of printed food names and search words
@@ -380,42 +382,42 @@ def get_description(df, food_items):
             print('Description in not present in the dataset.')
     return descriptions
 
-
-# Define a function to check for allergies and search words
-def check_allergy_and_search(row, allergies_lower, search_words_lower):
-    # Translate the description of the food item
-    translated_description = translate_description(row['description'])
-    
-    # Check for allergies in the translated description
-    for allergy in allergies_lower:
-        if allergy in translated_description.lower():
-            return None  # Skip this food item if allergy is found
-    
-    # Split the translated description into words
-    translated_words = translated_description.lower().split()
-    
-    # Check if any of the translated words match the search words
-    if any(word in translated_words for word in search_words_lower):
-        return row['Name']
-    
-    return None
-
 def search_food_names_with_allergy(df_filtered, search_words, allergies):
-    # Convert DataFrame to a list of dictionaries
-    data = df_filtered.to_dict(orient='records')
+    # Initialize sets to keep track of printed food names and search words
+    printed_food_names = set()
+    printed_search_words = set()
     
-    # Translate search words and allergies to lowercase for case-insensitive matching
-    search_words_lower = [word.lower() for word in search_words]
-    allergies_lower = [allergy.lower() for allergy in allergies]
-    
-    # Use multiprocessing Pool to parallelize the processing across multiple CPU cores
-    with Pool() as pool:
-        # Apply the function to each row of the DataFrame in parallel
-        results = pool.starmap(check_allergy_and_search, zip(data, repeat(allergies_lower), repeat(search_words_lower)))
-    
-    # Collect printed food names and search words
-    printed_food_names = set(filter(None, results))
-    printed_search_words = set(search_words)
+    # Iterate over each row in the DataFrame
+    for _, row in df_filtered.iterrows():
+        # Translate the description of the food item
+        translated_description = translate_description(row['description'])
+        
+        # Check for allergies in the translated description
+        allergy_found = False
+        for allergy in allergies:
+            if allergy.lower() in translated_description.lower():
+                allergy_found = True
+                break
+        
+        if allergy_found:
+            continue  # Skip this food item if allergy is found
+        
+        # Split the translated description into words
+        translated_words = translated_description.split()
+        
+        # Check if any of the translated words match the search words
+        for word in search_words:
+            if word.lower() in translated_words:
+                # Check if the food name has not been printed already
+                if row['Name'] not in printed_food_names:
+                    #print(row['Name'])
+                    printed_food_names.add(row['Name'])
+                break
+        else:
+            # Check if the search word has not been printed already
+            if word not in printed_search_words:
+                #print(word)
+                printed_search_words.add(word)
     
     return printed_food_names, printed_search_words              
 
